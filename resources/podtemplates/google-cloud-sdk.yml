@@ -1,0 +1,21 @@
+kind: Pod
+metadata:
+  name: cloud-sdk
+spec:
+  serviceAccount: provisioner
+  containers:
+  - name: jnlp
+    image: us-east1-docker.pkg.dev/core-workshop/workshop-registry/agent:2.319.2.5
+  - name: gcp-sdk
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:371.0.0
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+      - name: gcp-logs
+        mountPath: /.config/gcloud/logs
+  volumes:
+  - name: gcp-logs
+    emptyDir: {}
+  securityContext:
+    runAsUser: 1000
